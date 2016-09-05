@@ -18,7 +18,9 @@ class VisaType(models.Model):
 
 class Requirement(models.Model):
     origin_country = models.ForeignKey(Country)
-    destination_country = models.ForeignKey(Country)
+    destination_country = models.ForeignKey(
+        Country,
+        related_name='destination_requirement')
     visa_type = models.ForeignKey(VisaType)
     observations = models.TextField(null=True)
     period = models.DurationField(null=True)
