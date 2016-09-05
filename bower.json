@@ -1,0 +1,24 @@
+{
+  "name": "VisaReqs",
+  "authors": [
+    "Miguel Brito <miguelandres77@gmail.com>"
+  ],
+  "description": "Webpage to visualize visa requirements for all countries from info available on Wikipedia",
+  "main": "",
+  "keywords": [
+    "visa",
+    "world",
+    "map",
+    "international"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
