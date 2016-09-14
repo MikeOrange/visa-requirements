@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'visamap',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,12 @@ WSGI_APPLICATION = 'visarequirements.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['VISAREQUIREMENTS_DB_NAME'],
+        'USER': os.environ['VISAREQUIREMENTS_DB_USER'],
+        'PASSWORD': os.environ['VISAREQUIREMENTS_DB_PASSWORD'],
+        'HOST': os.environ['VISAREQUIREMENTS_DB_HOST'],
+        'PORT': os.environ['VISAREQUIREMENTS_DB_PORT'],
     }
 }
 
@@ -116,5 +121,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "visamap/static")
+]
 STATIC_URL = '/static/'
