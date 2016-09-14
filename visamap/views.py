@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from visamap.models import Country, Demonym, Requirement
 
 
+# CODE-REVIEW: a CBV would be better
 def index(request):
     """
     Main page to show in a map requirements by country
@@ -34,6 +35,7 @@ def country_requirements(request, country_id):
     for r in requirements:
         if r.visa_type.description not in res:
             res[r.visa_type.description] = []
+        # CODE-REVIEW: the following lines are difficult to read
         res[r.visa_type.description].append(
             r.destination_country.code.lower() if
             r.destination_country.code else None)
