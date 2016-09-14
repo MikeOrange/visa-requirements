@@ -16,6 +16,10 @@ class OriginCountryNotFound(Exception):
 
 
 class VisaRequirementRecord(object):
+    """
+    Represents a single Visa requirement from a country to a nationality
+    used tp organize and store the information on the Database
+    """
     def __init__(self,
                  nationality,
                  destination_country_name,
@@ -30,6 +34,12 @@ class VisaRequirementRecord(object):
         self._get_country_from_nationality(nationality)
 
     def _get_country_from_nationality(self, nationality):
+        """
+        Determines country of origin from the nationality using the
+        demonyms table
+        :param nationality: string containing nationality to be checked
+        :raise OriginCountryNotFound if the country determined does not exist
+        """
         demonym = Demonym.objects.filter(description=nationality).first()
         if demonym:
             self._origin_country = demonym.country
@@ -44,10 +54,19 @@ class VisaRequirementRecord(object):
 
     @property
     def origin_country(self):
+        """
+        Getter for country of origin
+        :return:
+        """
         return self._origin_country
 
     @property
     def destination_country(self):
+        """
+        Getter for destination country
+        :return: string containing the object from the Country
+        model of the destination country
+        """
         if not self._destination_country:
             try:
                 self._destination_country = Country.objects.get(
@@ -60,6 +79,11 @@ class VisaRequirementRecord(object):
 
     @property
     def visa_type(self):
+        """
+        Returns visa type object, creating it in the database
+        if it does not exist
+        :return: VisaType object
+        """
         if not self._visa_type:
             visa_type, created = VisaType.objects.get_or_create(
                 description=self._visa_description)
@@ -70,10 +94,17 @@ class VisaRequirementRecord(object):
 
     @property
     def notes(self):
+        """
+        :return: string containing the observations related to the visa
+        """
         return unicode(self._notes)
 
     @property
     def period(self):
+        """
+        Extracted period from notes in days
+        :return: timedelta object containing the period of the visa
+        """
         r_days = re.compile('(\d+) day')
         matched = r_days.search(self.notes)
         if matched:
@@ -84,6 +115,9 @@ class VisaRequirementRecord(object):
             return timedelta(days=int(matched.group(1))*30)
 
     def save_to_db(self):
+        """
+        Saves info contained in the instance to a database
+        """
         requirement, created = Requirement.objects.get_or_create(
             origin_country=self.origin_country,
             destination_country=self.destination_country,
@@ -96,6 +130,11 @@ class VisaRequirementRecord(object):
 
 
 def get_nationality_from_link_title(title):
+    """
+    Gets a nationality from a link title
+    :param title: Title of a link from the country list page
+    :return: string containing extracted nationality
+    """
     weird_nationality_re = re.compile('Visa requirements for .+ (?:c|C)itizens of (.+)')
     matched = weird_nationality_re.search(title)
     if matched:
@@ -108,6 +147,12 @@ def get_nationality_from_link_title(title):
 
 
 def add_country_requirements_to_db(nationality, all_requirements):
+    """
+    Builds VisaRequirementRecord instances from parsed requirements
+    :param nationality: string containing nationality of origin
+    :param all_requirements: dict with destination countries as keys
+    and all requirements structured as a list of tuples as its values
+    """
     for country_name in all_requirements:
         try:
             record = VisaRequirementRecord(nationality,
@@ -126,11 +171,38 @@ def add_country_requirements_to_db(nationality, all_requirements):
 class Command(BaseCommand):
     help = 'Extracts visa requirements for all countries and saves them to DB'
 
+    def add_arguments(self, parser):
+        """ Optional arguments """
+        parser.add_argument('--starting',
+                            dest='starting',
+                            default=False,
+                            help="Start parsing from this nationality")
+        parser.add_argument('--single',
+                            dest='single',
+                            default=False,
+                            help="Parse only this nationality")
+
+    @staticmethod
+    def process_requirements(nationality, link):
+        requirements = RequirementsPage(link.get("href")).get_requirements()
+        add_country_requirements_to_db(nationality, requirements)
+
     def handle(self, *args, **options):
         country_links = CountryListParser().requirements_links()
-        # TODO: add parameter to set individual country or
+
         # starting point
         for link in country_links:
             nationality = get_nationality_from_link_title(link.get('title'))
-            requirements = RequirementsPage(link.get("href")).get_requirements()
-            add_country_requirements_to_db(nationality, requirements)
+
+            if options.get('single'):
+                if nationality == options.get('single'):
+                    self.process_requirements(nationality, link)
+                    return
+            elif options.get('starting'):
+                process = False
+                if nationality == options.get('starting'):
+                    process = True
+                if process:
+                    self.process_requirements(nationality, link)
+            else:
+                self.process_requirements(nationality, link)

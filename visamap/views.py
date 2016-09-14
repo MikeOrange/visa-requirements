@@ -29,12 +29,10 @@ def specific_requirement(request, country_id, destination_id):
     requirement = Requirement.objects.filter(
         origin_country=country_id,
         destination_country=destination_id).first()
-    if requirement:
-        response = {
-            'observations': requirement.observations or 'Data not found.'
-        }
+
+    if requirement and requirement.observations:
+        observations = requirement.observations
     else:
-        response= {
-            'observations': 'Data not found.'
-        }
-    return JsonResponse(response)
+        observations = 'Data not found.'
+
+    return JsonResponse({'observations': observations})
