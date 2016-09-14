@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+    <title>World Visa Requirements</title>
+    <meta name="description" content="Interactive map containing visa requirements for all nationalities in the world according to Wikipedia" />
+    <meta name="keywords" content="maps, visa, visa requirements"/>
+    
+    <link href="{% static "libs/jqvmap/dist/jqvmap.css" %}" media="screen" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "css/visareqs.css" %}"/>
+    
+    <script type="text/javascript" src="{% static "libs/jquery/dist/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/jqvmap/dist/jquery.vmap.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/jqvmap/dist/maps/jquery.vmap.world.js" %}" charset="utf-8"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <header> 
+        <h1>World Visa Requirements</h1>
+        <nav>
+            <ul id="linkList">
+                <li class="linkItem"><a class="menuItem" href="#">By Citizenship</a></li>
+                <li class="linkItem"><a class="menuItem" href="#">By Destination</a></li>
+                <li class="linkItem"><a class="menuItem" href="#">Curiosities</a></li>
+                <li class="linkItem"><a class="menuItem" href="#">About</a></li>
+            </ul>
+        </nav>    
+    </header>
+    
+    <main>
+        <div id="countrySelectionContainer">
+            <div id="originContainer">
+                <label for="origCitizenship">Select traveler citizenship</label>
+                <select id="origCitizenship" class="countrySelection">
+                    <option value="0" selected>-- Select a Nationality --</option>
+                    {% for nationality in nationalities_list %}
+                        <option value="{{ nationality.country.id }}">{{ nationality.description }}</option>
+                    {% endfor %}
+                </select>
+               
+                <label for="destCountry">Select destination country</label>
+                <select id="destCountry" class="countrySelection">
+                    <option value="0" selected>-- Select a Country --</option>
+                    {% for country in country_list %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <div id="visaDetail">
+
+                </div>
+
+            </div> <!-- END OF originContainer -->
+            
+            <div id="worldMap">
+                <span id="mapInfo">Select a country for details</span>
+                <div id="vmap" style="width: 600px; height: 400px;"></div>
+            </div> <!-- END OF worldMap -->
+            
+        </div> <!-- END OF countrySelectionContainer -->
+        
+    </main>
+
+    <footer>
+        Miguel Brito 2016 &copy;
+    </footer>
+    </div> <!-- END OF wrapper -->
+    
+    <script type="text/javascript" src="{% static "js/visareqs.js" %}"></script>
+
+</body>

@@ -1,0 +1,101 @@
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-size: 62.5%;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: aliceblue
+}
+
+.wrapper {
+    font-size: 1.6em;
+    padding: 2em;
+    margin: 0 auto;
+    width: 990px;
+    background-color: white;
+}
+
+header {
+    margin-left: -2em;
+    margin-right: -2em;
+    padding-top: 2em;
+    padding-bottom: 1em;
+    padding-left: 2em;
+    margin-top: -2em;
+    margin-bottom: 2em;
+    background-color: #4682B4;
+    color: white;
+}
+
+#linkList {
+    margin-top: 20px;
+    list-style-type: none;
+    position: relative;
+    margin-left: 40%;
+}
+
+.linkItem {
+    display: inline-block; 
+    padding: 15px 25px 15px 25px;
+}
+
+.linkItem:hover {
+    background-color: white;
+}
+
+.linkItem:hover a {
+    color: #4682B4;
+}
+
+.menuItem {
+    color: white;
+    text-decoration: none;
+}
+
+.menuItem:link 
+.menuItem:visited {
+    color: white;
+}
+
+#countrySelectionContainer{
+    display: flex;
+}
+
+#originContainer{
+    width: 30%;
+}
+
+#worldMap{
+    flex-grow: 1;
+}
+
+label {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+}
+
+.countrySelection {
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+#mapInfo {
+    font-size: 0.8em;
+}
+
+footer {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+#destCountry {
+    margin-bottom: 15px;
+}
