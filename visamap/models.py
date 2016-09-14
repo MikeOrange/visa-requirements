@@ -11,6 +11,8 @@ class Country(models.Model):
 class Demonym(models.Model):
     # Description is not set to unique since Dominica
     # and Dominican Republic share demonym
+    # CODE-REVIEW: that's not a cause for not using unique, since
+    #   a unique constraint could be created using desc + country
     description = models.CharField(max_length=50)
     country = models.ForeignKey(Country)
 
