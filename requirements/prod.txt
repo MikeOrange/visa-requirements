@@ -1,0 +1,4 @@
+-r common.txt
+
+# Deployment libs
+uWSGI==2.0.13.1

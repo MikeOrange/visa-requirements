@@ -6,10 +6,13 @@ Webpage to visualize visa requirements for all countries from info available on 
 
 ### Install and run
  - Install and activate virtualenv
- - Install backend requirements in the virtualenv via:
+ - Install backend requirements in the virtualenv depending on the environment you are at:
 ```sh
-$ pip install -r requirements.txt
+$ pip install -r requirements.txt # Production
+$ pip install -r requirements/dev.txt # Development
 ```
+
+
 - Install frontend requirements using: (you need to install bower previously using npm)
 ```sh
 $ bower install
