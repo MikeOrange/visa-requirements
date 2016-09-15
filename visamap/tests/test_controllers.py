@@ -2,7 +2,6 @@ from datetime import timedelta
 from json import loads
 from django.test import TestCase, Client
 from visamap.models import Country, Requirement, Demonym, VisaType
-from visamap.views import country_requirements, specific_requirement
 
 
 class CountryRequirementsTests(TestCase):

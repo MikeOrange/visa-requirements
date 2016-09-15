@@ -1,0 +1,8 @@
+-r common.txt
+
+# Debugging libs
+ipdb==0.10.1
+
+# Testing libs
+mock==2.0.0
+mixer==5.5.7
