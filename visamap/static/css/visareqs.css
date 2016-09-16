@@ -99,3 +99,18 @@ footer {
 #destCountry {
     margin-bottom: 15px;
 }
+
+#visaDetail {
+    margin-right: 10px;
+    min-height: 100px;
+    margin-bottom: 10px;
+}
+
+.legendColor {
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}

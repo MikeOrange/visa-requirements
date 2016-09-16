@@ -17,6 +17,14 @@ class IndexView(View):
         })
 
 
+class MapByDestinationView(View):
+    def get(self, request):
+        country_list = Country.objects.all().order_by('name')
+        return render(request, 'visamap/by_destination.html', {
+            'country_list': country_list,
+        })
+
+
 class CountriesByVisaType(View):
     def _format_response(self, requirements_for_country):
         """
@@ -38,6 +46,12 @@ class CountriesByVisaType(View):
 
         return destinations_by_visa
 
+    def _add_origin_country(self, codes_by_visa_name, country_id):
+        origin_country = Country.objects.filter(id=country_id).first()
+        if origin_country:
+            codes_by_visa_name['origin country'] = [origin_country.formatted_code]
+        return codes_by_visa_name
+
     def get(self, request, country_id):
         """
         Controller to be used via AJAX, that returns
@@ -52,11 +66,12 @@ class CountriesByVisaType(View):
         """
         requirements_for_country = Requirement.for_nationals_of(country_id)
         codes_by_visa_name = self._format_response(requirements_for_country)
+        codes_by_visa_name = self._add_origin_country(codes_by_visa_name, country_id)
         return JsonResponse(codes_by_visa_name)
 
 
 class SpecificRequirementView(View):
-    def get(self, request, country_id, destination_id):
+    def get(self, request, country_id, destination_code):
         """
         Controller to be used via AJAX, that returns observations for a
         determined visa of an specific destination
@@ -66,10 +81,14 @@ class SpecificRequirementView(View):
         """
         requirement = Requirement.objects.filter(
             origin_country=country_id,
-            destination_country=destination_id).first()
+            destination_country__code=destination_code.upper()).first()
+        observations = ""
 
-        if requirement and requirement.observations:
-            observations = requirement.observations
+        if requirement:
+            if requirement.visa_type:
+                observations = requirement.visa_type.description
+            if requirement.observations:
+                observations += " - " + requirement.observations
         else:
             observations = 'Data not found.'
 

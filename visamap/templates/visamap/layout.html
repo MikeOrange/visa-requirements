@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+    <title>World Visa Requirements</title>
+    <meta name="description" content="Interactive map containing visa requirements for all nationalities in the world according to Wikipedia" />
+    <meta name="keywords" content="maps, visa, visa requirements"/>
+
+    <link href="{% static "libs/jqvmap/dist/jqvmap.css" %}" media="screen" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "css/visareqs.css" %}"/>
+
+    <script type="text/javascript" src="{% static "libs/jquery/dist/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/jqvmap/dist/jquery.vmap.js" %}"></script>
+    <script type="text/javascript" src="{% static "libs/jqvmap/dist/maps/jquery.vmap.world.js" %}" charset="utf-8"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+        <h1><a class="menuItem" href="{% url 'index' %}">World Visa Requirements</a></h1>
+        <nav>
+            <ul id="linkList">
+                <li class="linkItem"><a class="menuItem" href="{% url 'index' %}">By Citizenship</a></li>
+                <li class="linkItem"><a class="menuItem" href="{% url 'by_destination' %}">By Destination</a></li>
+                <li class="linkItem"><a class="menuItem" href="#">Curiosities</a></li>
+                <li class="linkItem"><a class="menuItem" href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        Miguel Brito 2016 &copy;
+    </footer>
+    </div> <!-- END OF wrapper -->
+
+    <script type="text/javascript" src="{% static "js/visamap_base.js" %}"></script>
+    {% block custom_js %}
+    {% endblock %}
+
+</body>
