@@ -1,4 +1,5 @@
 {% extends 'visamap/layout.html' %}
+{% load static %}
 
 {% block content %}
     <main>
@@ -20,8 +21,11 @@
                     {% endfor %}
                 </select>
 
-                <div id="visaDetail">
+                <div id="loadingSpinner">
+                    <img src="{% static "images/spinner.gif" %}">
+                </div>
 
+                <div id="visaDetail">
                 </div>
 
                 <div id="mapLegend">

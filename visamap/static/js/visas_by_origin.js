@@ -3,6 +3,13 @@ $(document).ready(function() {
       /* Changes map colors when selecting an origin country */
       $("#origCitizenship").change(function(){
           $("#destCountry").val("0");
+
+          /* Resetting visa details */
+          mapHandler.resetVisaDetails();
+
+          /* Show to let user know that content is loading */
+          $("#loadingSpinner").show();
+
           $.get("requirements/" + this.value, function(countryRequirements){
               var countryColors = {}
 
@@ -21,10 +28,10 @@ $(document).ready(function() {
               /* We need to reset the map to avoid old colors from the last country */
               mapHandler.resetMap();
 
-              /* Also resetting visa details */
-              mapHandler.resetVisaDetails();
-
               $('#vmap').vectorMap('set', 'colors', countryColors);
+
+              /* Finished loading */
+              $("#loadingSpinner").hide();
           });
       });
 
@@ -32,9 +39,11 @@ $(document).ready(function() {
           originCountryId =  $("#origCitizenship").val();
 
           if(originCountryId != 0){
+              $("#loadingSpinner").show();
               $.get("requirements/" + originCountryId + "/" + destination_id + "/", function(data){
                   $("#visaDetail").html("<strong>Observations</strong><br/>" +
                                         data.observations);
+                  $("#loadingSpinner").hide();
               });
           }
       };
