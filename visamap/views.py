@@ -1,3 +1,4 @@
+import abc
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
@@ -25,7 +26,13 @@ class MapByDestinationView(View):
         })
 
 
-class CountriesByVisaType(View):
+class CountriesByVisaBase(View):
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def _interest_code(self, requirement):
+        pass
+
     def _format_response(self, requirements_for_country):
         """
         Formats response so that it can be easily usable by the frontend
@@ -37,12 +44,12 @@ class CountriesByVisaType(View):
 
         for req in requirements_for_country:
             visa_name = req.visa_type.description
-            destination_code = req.destination_country.formatted_code
+            interest_code = self._interest_code(req)
 
             if visa_name not in destinations_by_visa:
                 destinations_by_visa[visa_name] = []
 
-            destinations_by_visa[visa_name].append(destination_code)
+            destinations_by_visa[visa_name].append(interest_code)
 
         return destinations_by_visa
 
@@ -51,6 +58,12 @@ class CountriesByVisaType(View):
         if origin_country:
             codes_by_visa_name['origin country'] = [origin_country.formatted_code]
         return codes_by_visa_name
+
+
+class DestinationsByVisaType(CountriesByVisaBase):
+
+    def _interest_code(self, requirement):
+        return requirement.destination_country.formatted_code
 
     def get(self, request, country_id):
         """
@@ -70,7 +83,44 @@ class CountriesByVisaType(View):
         return JsonResponse(codes_by_visa_name)
 
 
-class SpecificRequirementView(View):
+class OriginsByVisaType(CountriesByVisaBase):
+
+    def _interest_code(self, requirement):
+        return requirement.origin_country.formatted_code
+
+    def get(self, request, country_id):
+        """
+        Controller to be used via AJAX, that returns
+        all visa types by origin country
+        :param country_id: id of the destination country
+        :return JSON containing visa types as it keys and a list of country
+        codes as its values
+        example: {'visa required': ['xx', 'yy', 'zz'],
+                  'visa not required': ['ww', 'jj'],
+                  'eVisa': ['xy']
+                  }
+        """
+        requirements_for_country = Requirement.for_visitors_to(country_id)
+        codes_by_visa_name = self._format_response(requirements_for_country)
+        codes_by_visa_name = self._add_origin_country(codes_by_visa_name, country_id)
+        return JsonResponse(codes_by_visa_name)
+
+
+class SpecificRequirementBase(View):
+
+    def _get_observations(self, requirement):
+        observations = ""
+        if requirement:
+            if requirement.visa_type:
+                observations = requirement.visa_type.description
+            if requirement.observations:
+                observations += " - " + requirement.observations
+        else:
+            observations = 'Data not found.'
+        return JsonResponse({'observations': observations})
+
+
+class SpecificRequirementForDestination(SpecificRequirementBase):
     def get(self, request, country_id, destination_code):
         """
         Controller to be used via AJAX, that returns observations for a
@@ -82,14 +132,19 @@ class SpecificRequirementView(View):
         requirement = Requirement.objects.filter(
             origin_country=country_id,
             destination_country__code=destination_code.upper()).first()
-        observations = ""
+        return self._get_observations(requirement)
 
-        if requirement:
-            if requirement.visa_type:
-                observations = requirement.visa_type.description
-            if requirement.observations:
-                observations += " - " + requirement.observations
-        else:
-            observations = 'Data not found.'
 
-        return JsonResponse({'observations': observations})
+class SpecificRequirementForOrigin(SpecificRequirementBase):
+    def get(self, request, country_code, destination_id):
+        """
+        Controller to be used via AJAX, that returns observations for a
+        determined visa of an specific origin
+        :param country_code: code of the destination
+        :param destination_id: country_id of the origin country
+        :return JSON containing an object with observations related to the visa
+        """
+        requirement = Requirement.objects.filter(
+            origin_country__code=country_code.upper(),
+            destination_country=destination_id).first()
+        return self._get_observations(requirement)

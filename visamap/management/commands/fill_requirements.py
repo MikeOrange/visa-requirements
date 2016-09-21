@@ -162,9 +162,11 @@ def add_country_requirements_to_db(nationality, all_requirements):
             record.save_to_db()
         except OriginCountryNotFound:
             # TODO: Save detailed error to log
+            print "Origin country not found!"
             continue
         except DestinationCountryNotFound:
             # TODO: Save detailed error to log
+            print "Destination country not found!"
             continue
 
 

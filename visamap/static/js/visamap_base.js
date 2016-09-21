@@ -27,7 +27,21 @@ var mapHandler = (function(self){
                 self.mapCallback(code);
             }
         });
+
+        sizeMap();
       };
+
+      /* responsiveness solution found on http://stackoverflow.com/questions/26618012/trying-to-get-a-jqvmap-to-scale-correctly-on-iphone */
+      function sizeMap() {
+        var containerWidth = $('#worldMap').width(),
+            containerHeight = (containerWidth / 1.6);
+
+        $('#vmap').css({
+            'width': containerWidth,
+            'height': containerHeight
+        });
+      }
+      $(window).on("resize", sizeMap);
 
       self.getVisaColor = function(visaType){
           switch(visaType){

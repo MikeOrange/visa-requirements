@@ -32,7 +32,7 @@ $(document).ready(function() {
           originCountryId =  $("#origCitizenship").val();
 
           if(originCountryId != 0){
-              $.get("requirements/" + originCountryId + "/" + destination_id, function(data){
+              $.get("requirements/" + originCountryId + "/" + destination_id + "/", function(data){
                   $("#visaDetail").html("<strong>Observations</strong><br/>" +
                                         data.observations);
               });

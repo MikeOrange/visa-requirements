@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
-
+<html lang="en">
 <head>
     <title>World Visa Requirements</title>
     <meta name="description" content="Interactive map containing visa requirements for all nationalities in the world according to Wikipedia" />
     <meta name="keywords" content="maps, visa, visa requirements"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="{% static "libs/jqvmap/dist/jqvmap.css" %}" media="screen" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -22,7 +23,6 @@
             <ul id="linkList">
                 <li class="linkItem"><a class="menuItem" href="{% url 'index' %}">By Citizenship</a></li>
                 <li class="linkItem"><a class="menuItem" href="{% url 'by_destination' %}">By Destination</a></li>
-                <li class="linkItem"><a class="menuItem" href="#">Curiosities</a></li>
                 <li class="linkItem"><a class="menuItem" href="#">About</a></li>
             </ul>
         </nav>
@@ -41,3 +41,4 @@
     {% endblock %}
 
 </body>
+</html>

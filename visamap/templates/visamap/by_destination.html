@@ -8,7 +8,7 @@
                 <select id="destCountry" class="countrySelection">
                     <option value="0" selected>-- Select a Country --</option>
                     {% for country in country_list %}
-                        <option value="{{ country.formatted_code }}">{{ country.name }}</option>
+                        <option value="{{ country.id }}">{{ country.name }}</option>
                     {% endfor %}
                 </select>
 

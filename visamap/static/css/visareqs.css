@@ -17,7 +17,7 @@ body {
     font-size: 1.6em;
     padding: 2em;
     margin: 0 auto;
-    width: 990px;
+    max-width: 990px;
     background-color: white;
 }
 
@@ -113,4 +113,39 @@ footer {
     border-width: 1px;
     border-style: solid;
     border-color: black;
+}
+
+@media only screen and (max-width: 990px) {
+    header {
+        padding-left: 0;
+    }
+
+    #linkList {
+        margin-left: 0px;
+    }
+
+    .linkItem {
+        display: block;
+        padding: 15px 25px 15px 25px;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #countrySelectionContainer{
+        display: block;
+    }
+
+    #originContainer{
+        width: 70%;
+        margin: 0 auto 10px auto;
+    }
+
+    #worldMap{
+        width: 100%;
+        margin: 0 auto;
+    }
+
 }
