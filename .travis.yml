@@ -1,0 +1,19 @@
+env:
+- VISAREQUIREMENTS_DB_NAME=test
+- VISAREQUIREMENTS_DB_USER=test
+- VISAREQUIREMENTS_DB_PASSWORD=test
+- VISAREQUIREMENTS_DB_HOST=test
+- VISAREQUIREMENTS_DB_PORT=5432
+
+services:
+– postgresql
+
+language: python
+python:
+  - "2.7"
+
+# command to install dependencies
+install: "pip install -r requirements/dev.txt"
+
+# command to run tests
+script: python manage.py test

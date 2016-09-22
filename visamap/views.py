@@ -2,16 +2,28 @@ import abc
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
+from django.db.models import Count
 from visamap.models import Country, Demonym, Requirement
 
 
-class IndexView(View):
+class MapByOriginView(View):
     """
     Main page to show in a map requirements by country
     """
     def get(self, request):
-        country_list = Country.objects.all().order_by('name')
-        nationalities_list = Demonym.objects.all().order_by('description')
+        # Returns only countries with more than 1
+        # requirement on the DB
+        country_list = Country.objects.annotate(
+            num_requirements=Count(
+                'requirement')).filter(
+            num_requirements__gt=1).order_by('name')
+
+        # Returns only demonyms with more than 1
+        # requirement for its country on the DB
+        nationalities_list = Demonym.objects.annotate(
+            num_reqs=Count('country__requirement')).filter(
+            num_reqs__gt=1).order_by('description')
+
         return render(request, 'visamap/index.html', {
             'country_list': country_list,
             'nationalities_list': nationalities_list
@@ -20,7 +32,12 @@ class IndexView(View):
 
 class MapByDestinationView(View):
     def get(self, request):
-        country_list = Country.objects.all().order_by('name')
+        # Returns only countries with more than 1
+        # requirement on the DB
+        country_list = Country.objects.annotate(
+            num_requirements=Count(
+                'destination_requirement')).filter(
+            num_requirements__gt=1).order_by('name')
         return render(request, 'visamap/by_destination.html', {
             'country_list': country_list,
         })

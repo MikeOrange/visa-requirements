@@ -5,3 +5,4 @@ distribute==0.6.24
 wsgiref==0.1.2
 beautifulsoup4==4.5.1
 requests==2.11.1
+psycopg2==2.4.5
