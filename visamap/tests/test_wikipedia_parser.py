@@ -87,7 +87,7 @@ class CountryParserTests(TestCase):
         mock_requests.get.return_value.text = self.page_html
         parser = CountryListParser()
         self.assertEqual(
-            'Angolan',
+            'Anguillan',
             parser.requirements_links()[0].get_text())
 
     @mock.patch('visamap.management.commands.'

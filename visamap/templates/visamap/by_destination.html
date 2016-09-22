@@ -5,16 +5,16 @@
     <main>
         <div id="countrySelectionContainer">
             <div id="originContainer">
-                <label for="origCitizenship">Select traveler citizenship</label>
-                <select id="origCitizenship" class="countrySelection">
-                    <option value="0" selected>-- Select a Nationality --</option>
-                    {% for nationality in nationalities_list %}
-                        <option value="{{ nationality.country.id }}">{{ nationality.description }}</option>
-                    {% endfor %}
-                </select>
-               
                 <label for="destCountry">Select destination country</label>
                 <select id="destCountry" class="countrySelection">
+                    <option value="0" selected>-- Select a Country --</option>
+                    {% for country in country_list %}
+                        <option value="{{ country.id }}">{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="origCountry">Select country of origin</label>
+                <select id="origCountry" class="countrySelection">
                     <option value="0" selected>-- Select a Country --</option>
                     {% for country in country_list %}
                         <option value="{{ country.formatted_code }}">{{ country.name }}</option>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div id="mapLegend">
-                    <div><div class="legendColor" style="background-color: blue;"></div> Origin country</div>
+                    <div><div class="legendColor" style="background-color: blue;"></div> Destination country</div>
                     <div><div class="legendColor" style="background-color: red;"></div> Visa required</div>
                     <div><div class="legendColor" style="background-color: green;"></div> Visa not required</div>
                     <div><div class="legendColor" style="background-color: yellow;"></div> Visa on arrival</div>
@@ -38,12 +38,12 @@
                 </div>
 
             </div> <!-- END OF originContainer -->
-
+            
             <div id="worldMap">
                 <span id="mapInfo">Select a country for details</span>
                 <div id="vmap" style="width: 600px; height: 400px;"></div>
             </div> <!-- END OF worldMap -->
-
+            
         </div> <!-- END OF countrySelectionContainer -->
         
     </main>
@@ -51,5 +51,5 @@
 
 {% block custom_js %}
 {% load static %}
-<script type="text/javascript" src="{% static "js/visas_by_origin.js" %}"></script>
+<script type="text/javascript" src="{% static "js/visas_by_destination.js" %}"></script>
 {% endblock custom_js %}

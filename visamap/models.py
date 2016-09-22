@@ -43,3 +43,8 @@ class Requirement(models.Model):
     def for_nationals_of(origin_country_id):
         return Requirement.objects.filter(
             origin_country=origin_country_id).all()
+
+    @staticmethod
+    def for_visitors_to(destination_country_id):
+        return Requirement.objects.filter(
+            destination_country=destination_country_id).all()
