@@ -79,11 +79,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['VISAREQUIREMENTS_DB_NAME'],
         'USER': os.environ['VISAREQUIREMENTS_DB_USER'],
-        'PASSWORD': os.environ['VISAREQUIREMENTS_DB_PASSWORD'],
         'HOST': os.environ['VISAREQUIREMENTS_DB_HOST'],
         'PORT': os.environ['VISAREQUIREMENTS_DB_PORT'],
     }
 }
+
+if os.environ.get('VISAREQUIREMENTS_DB_PASSWORD'):
+    DATABASES['default']['PASSWORD'] = os.environ[
+        'VISAREQUIREMENTS_DB_PASSWORD']
 
 
 # Password validation

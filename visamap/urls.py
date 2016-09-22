@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.MapByOriginView.as_view(), name='index'),
     url(r'^by_destination/$', views.MapByDestinationView.as_view(),
         name='by_destination'),
     url(r'^requirements/(?P<country_id>[0-9]+)/$',

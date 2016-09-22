@@ -1,6 +1,6 @@
 # Visa Requirements
 (Project in progress)
-
+[![Build Status](https://travis-ci.org/MikeOrange/visa-requirements.svg?branch=master)](https://travis-ci.org/MikeOrange/visa-requirements)
 
 Webpage to visualize visa requirements for all countries from info available on Wikipedia. Uses [jqvmap](https://github.com/manifestinteractive/jqvmap) to visualize the data. Includes scripts to scrap and parse content from Wikipedia using [requests](http://docs.python-requests.org/en/master/) and [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) 
 
