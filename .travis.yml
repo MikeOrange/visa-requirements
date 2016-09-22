@@ -7,14 +7,18 @@ python:
 
 env:
   global:
-    - VISAREQUIREMENTS_DB_NAME=test
-    - VISAREQUIREMENTS_DB_USER=test
-    - VISAREQUIREMENTS_DB_PASSWORD=test
+    - VISAREQUIREMENTS_DB_NAME=travis_ci_test
+    - VISAREQUIREMENTS_DB_USER=postgres
     - VISAREQUIREMENTS_DB_HOST=localhost
     - VISAREQUIREMENTS_DB_PORT=5432
 
 # command to install dependencies
 install: "pip install -r requirements/dev.txt"
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
 
 # command to run tests
 script: python manage.py test
